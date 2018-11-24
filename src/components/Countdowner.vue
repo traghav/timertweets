@@ -2,7 +2,9 @@
   <div class="countDowner">
     <h1>{{ msg }}</h1>
     <div class="loading" v-if="loaded===false">
-    <h2>Loading....</h2>
+    <h2>Loading Tweet
+      <img src="../assets/loader.gif">
+    </h2>
     
     </div>
     <div class="loading" v-if="loaded">
@@ -16,9 +18,18 @@
         </countdown>
       </div>
       <div class="countdown" v-if="time<0">
-        Message: {{message}}
-        Hash: {{hash}}
-        Algo: {{algo}}
+        <div class="messagebox">
+          <b-form-textarea textarea v-model="message" placeholder="Enter message to be encrypted" :readonly="true" :rows="4"></b-form-textarea >
+        </div>
+        <div class="hash">
+          Proof: <pre>{{hash}}</pre>
+        </div>
+        <div class="hash">
+          Algorithm: <pre>{{algo}}</pre>
+        </div>
+        <div class="hash">
+          Posted Date: {{postedDate}}
+        </div>
       </div>
     </div>
   </div>
@@ -32,13 +43,14 @@ export default {
   data() {
     return { 
       uurl: this.$route.params.uurl,
-      msg: 'Timer Tweets',
+      msg: 'Timer Tweet 🔒',
       time: 0,
       loaded: false,
       message:'',
       hash:'',
       algo:'',
-      revealDate:''
+      revealDate:'',
+      postedDate:''
     }
   },
   methods: {
@@ -63,12 +75,13 @@ export default {
               vm.algo=data.algo
               vm.hash=data.hash
               vm.revealDate=data.revealDate
+              vm.postedDate=data.currentDate
               vm.loaded=true
               vm.calculateDiff()
            }
            else {
             alert("Could not find the Tweet URL")
-            //vm.$router.push('/')
+            vm.$router.push('/')
            }
           });
     }
@@ -95,7 +108,12 @@ a {
 .countDowner {
   margin: 10px;
 }
-
-
+.messagebox {
+  max-width: 350px;
+  margin-bottom: 10px;
+}
+.hash pre {
+  display: inline;
+}
 
 </style>
