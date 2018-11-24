@@ -45,7 +45,9 @@
         <span class="tweet">
           <b-button  variant="primary" v-on:click="sendTweet()">Tweet it !</b-button>
         </span>
-        
+        <span class="tweet">
+          <b-button  variant="primary" v-on:click="test()">Test it !</b-button>
+        </span>
 
       </div>
   </div>
@@ -123,6 +125,9 @@ export default {
       }
       this.composedMessage=link+this.encodeQueryData(tweetData)
       },
+    test(){
+      alert("flight")
+    },
     dateAdder() {
       var currentDate = new Date()
       var newDate = new Date(currentDate)

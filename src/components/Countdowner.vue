@@ -3,7 +3,9 @@
     <h1>{{ msg }}</h1>
 
     <div class="user">
-     
+     <countdown :time="time" :interval="100" tag="p" @countdownend="end">
+    <template slot-scope="props">New Year Countdown：{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds.</template>
+    </countdown>
 
     </div>
   </div>
@@ -14,13 +16,22 @@ import crypto from 'crypto'
 export default {
   name: 'Countdowner',
   data() {
+    var now=new Date()
+    var newDate = new Date(now)
+    
+    
+    newDate.setSeconds(newDate.getSeconds()+5)
+    var x=newDate.toUTCString()
+    var p=Date.parse(x)
     return { 
-      msg: "Timer Tweet 🔒"
-      
+      msg: p,
+      time: p-now
     }
   },
   methods: {
-    
+    end(){
+      alert("Ended")
+    }
   },
   watch: {
 
