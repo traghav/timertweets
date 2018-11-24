@@ -1,39 +1,160 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+      <div class="messagebox">
+        <b-form-textarea textarea v-model="tweet" v-on:input="tweetChange()" placeholder="Enter message to be encrypted" :rows="2"></b-form-textarea >
+      </div>
+      <div class="algo">
+        <b-form-select v-model="algo" v-on:input="tweetChange()" class="mb-3" size="sm">
+          <option v-for="algo in algos" v-bind:value="algo">
+            {{ algo }}
+          </option>
+        </b-form-select>
+      </div>
+      <div>
+        <div class="hash">Hash: <pre>{{hash}}</pre></div>
+      </div>
+      <h4>Unlock Tweet after: {{unlockTime}}</h4>
+      <div class="expiry">
+        <div class="picker">
+          <p>Seconds</p>
+          <b-form-select v-model="seconds">
+            <option v-for="n in 60" :value="n">{{ n }}</option>
+          </b-form-select> 
+        </div>
+        <div class="picker">
+          <p>Minutes</p>
+          <b-form-select v-model="minutes">
+            <option v-for="n in 60" :value="n">{{ n }}</option>
+          </b-form-select> 
+        </div>
+        <div class="picker">
+          <p>Hours</p>
+          <b-form-select v-model="hours">
+            <option v-for="n in 24" :value="n">{{ n }}</option>
+          </b-form-select> 
+        </div>
+        <div class="picker">
+          <p>Days</p>
+          <b-form-select v-model="days">
+            <option v-for="n in 999" :value="n">{{ n }}</option>
+          </b-form-select> 
+        </div>   
+      </div>
+      <div class="user">
+        <span class="tweet">
+          <b-button  variant="primary" v-on:click="sendTweet()">Tweet it !</b-button>
+        </span>
+        
+
+      </div>
   </div>
 </template>
 
 <script>
+import crypto from 'crypto'
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  data() {
+    return {
+      seconds: 0,
+      minutes: 0,
+      hours: 0,
+      days: 0,
+      msg: "Timer Tweet 🔒",
+      tweet:'',
+      composedMessage:'',
+      sendCopy:false,
+      email:'',
+      unlockTime: '',
+      hash:'',
+      sent:false,
+      algos:['MD5','RIPEMD160','SHA1','SHA224','SHA256','SHA384','SHA512'],
+      algo:'SHA256'
+    }
+  },
+  methods: {
+    tweetChange(){
+      if(this.tweet!==''){
+        this.computeHash()
+      } 
+      else this.hash=''
+    },
+    computeHash(){
+      if(this.tweet===''){
+        this.hash=''
+      }
+      else {
+      const secret = '';
+      this.hash = crypto.createHash(this.algo, secret)
+                 .update(this.tweet)
+                 .digest('hex');  
+      }
+      
+    },
+    computeUnlockTime(){
+      var unlockTime=''
+      if(this.days!==0)
+        unlockTime=this.days+" days "
+      if(this.hours!==0)
+        unlockTime+=this.hours+" hours "
+      if(this.minutes!==0)
+        unlockTime+=this.minutes+" minutes "
+      if(this.seconds!==0)
+        unlockTime+=this.seconds+" seconds"
+      this.unlockTime=unlockTime
+    },
+    encodeQueryData(data) {
+     const ret = [];
+     for (let d in data)
+       ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+     return ret.join('&');
+    },
+    composeTweet(){
+      this.computeUnlockTime();
+      this.computeHash();
+      const link='https://twitter.com/intent/tweet?'
+      var text='This is a locked Tweet. It will be unlocked in '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
+
+      const tweetData ={
+        'text': text,
+        'hashtags':[this.algo,'TimerTweets'],
+        'url':"https://google.com"
+      }
+      this.composedMessage=link+this.encodeQueryData(tweetData)
+      },
+    dateAdder() {
+      var currentDate = new Date()
+      var newDate = new Date(currentDate)
+      newDate.setDate(newDate.getDate()+this.days)
+      newDate.setHours(newDate.getHours()+this.hours)
+      newDate.setMinutes(newDate.getMinutes()+this.minutes)
+      newDate.setSeconds(newDate.getSeconds()+this.seconds)
+      return newDate.toUTCString()
+    },
+    sendTweet() {
+      this.composeTweet()
+      window.location = this.composedMessage;
+    } 
+  },
+  watch: {
+    algo: function (newAlgo){
+      this.algo=newAlgo
+      this.computeHash()
+    },
+    seconds: function(){
+      this.computeUnlockTime()
+    },
+    minutes: function(){
+      this.computeUnlockTime()
+    },
+    hours: function(){
+      this.computeUnlockTime()
+    },
+    days: function(){
+      this.computeUnlockTime()
+    }
+
   }
 }
 </script>
@@ -53,5 +174,30 @@ li {
 }
 a {
   color: #42b983;
+}
+.expiry {
+  display: flex;
+}
+.picker {
+  margin-right: 10px;
+}
+.hello {
+  margin: 10px;
+}
+
+
+.user{
+  margin-top: 10px;
+}
+.messagebox {
+  max-width: 350px;
+  margin-bottom: 10px;
+}
+.algo {
+  margin-top: 10px;
+  max-width: 350px;
+}
+.hash pre {
+  display: inline;
 }
 </style>
