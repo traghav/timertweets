@@ -5,7 +5,7 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueCountdown from '@xkeshi/vue-countdown'
-
+import firebase from 'firebase'
 //Vue.use(firebase)
 Vue.component(VueCountdown.name, VueCountdown)
 Vue.use(BootstrapVue);

@@ -87,6 +87,7 @@ export default {
       sendCopy:false,
       email:'',
       unlockTime: '',
+      tailURL:'',
       hash:'',
       sent:false,
       algos:['MD5','RIPEMD160','SHA1','SHA224','SHA256','SHA384'],
@@ -154,7 +155,7 @@ export default {
       this.computeHash();
       const link='https://twitter.com/intent/tweet?'
       var text='This is a locked Tweet. It will be unlocked '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
-      var finalUrl= 'http://localhost:8080/tweets/'+this.hash.substring(1,8)
+      var finalUrl= 'http://localhost:8080/tweets/'+this.tailURL
          const tweetData ={
         'text': text,
         'hashtags':[this.algo,'TimerTweets'],
@@ -172,10 +173,14 @@ export default {
       return newDate.toUTCString()
     },
     pushToFirebase(){
-      var tailURL=this.hash.substring(1,8)
       var currentDate = new Date().toUTCString()
+      var seed = currentDate + this.hash
       var revealDate = this.dateAdder()
-      database.ref('tweets/' + tailURL).push({
+      var tailURL = crypto.createHash(this.algo, 'secret')
+                 .update(seed)
+                 .digest('hex').substring(1,8);
+      this.tailURL=tailURL
+      database.ref('tweets/' + tailURL).set({
         tweet: this.tweet,
         algo: this.algo,
         hash: this.hash,
