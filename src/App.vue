@@ -1,25 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      
     </div>
     <router-view/>
   </div>
 </template>
 
-<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
-<script>
-  var config = {
-    apiKey: "AIzaSyCz4Aq-6-bgRJA0tnE9yiMcLIhno_bvGK4",
-    authDomain: "timertweets.firebaseapp.com",
-    databaseURL: "https://timertweets.firebaseio.com",
-    projectId: "timertweets",
-    storageBucket: "",
-    messagingSenderId: "787420252046"
-  };
-  firebase.initializeApp(config);
-</script>
 
 <style>
 #app {

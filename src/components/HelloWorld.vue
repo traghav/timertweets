@@ -14,29 +14,33 @@
       <div>
         <div class="hash">Hash: <pre>{{hash}}</pre></div>
       </div>
-      <h4>Unlock Tweet after: {{unlockTime}}</h4>
+      <h4>Unlock Tweet {{unlockTime}}</h4>
       <div class="expiry">
         <div class="picker">
           <p>Seconds</p>
           <b-form-select v-model="seconds">
+            <option value="0">0</option>
             <option v-for="n in 60" :value="n">{{ n }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Minutes</p>
           <b-form-select v-model="minutes">
+            <option value="0">0</option>
             <option v-for="n in 60" :value="n">{{ n }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Hours</p>
           <b-form-select v-model="hours">
+            <option value="0">0</option>
             <option v-for="n in 24" :value="n">{{ n }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Days</p>
           <b-form-select v-model="days">
+            <option value="0">0</option>
             <option v-for="n in 999" :value="n">{{ n }}</option>
           </b-form-select> 
         </div>   
@@ -46,7 +50,7 @@
           <b-button  variant="primary" v-on:click="sendTweet()">Tweet it !</b-button>
         </span>
         <span class="tweet">
-          <b-button  variant="primary" v-on:click="test()">Test it !</b-button>
+          <b-button  variant="primary" v-on:click="pushToFirebase()">Test it !</b-button>
         </span>
 
       </div>
@@ -55,11 +59,25 @@
 
 <script>
 import crypto from 'crypto'
+import firebase from 'firebase'
+
+
+
+var config = {
+    apiKey: "AIzaSyCz4Aq-6-bgRJA0tnE9yiMcLIhno_bvGK4",
+    authDomain: "timertweets.firebaseapp.com",
+    databaseURL: "https://timertweets.firebaseio.com",
+    projectId: "timertweets",
+    storageBucket: "timertweets.appspot.com",
+    messagingSenderId: "787420252046"
+  };
+firebase.initializeApp(config)
+var database = firebase.database();
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      seconds: 0,
+      seconds: 30,
       minutes: 0,
       hours: 0,
       days: 0,
@@ -71,8 +89,8 @@ export default {
       unlockTime: '',
       hash:'',
       sent:false,
-      algos:['MD5','RIPEMD160','SHA1','SHA224','SHA256','SHA384','SHA512'],
-      algo:'SHA256'
+      algos:['MD5','RIPEMD160','SHA1','SHA224','SHA256','SHA384'],
+      algo:'SHA1'
     }
   },
   methods: {
@@ -96,15 +114,34 @@ export default {
     },
     computeUnlockTime(){
       var unlockTime=''
-      if(this.days!==0)
-        unlockTime=this.days+" days "
-      if(this.hours!==0)
-        unlockTime+=this.hours+" hours "
-      if(this.minutes!==0)
-        unlockTime+=this.minutes+" minutes "
-      if(this.seconds!==0)
-        unlockTime+=this.seconds+" seconds"
-      this.unlockTime=unlockTime
+      if(this.days!==0) {
+        if(this.days==1)
+          unlockTime=this.days+" day "
+        else
+          unlockTime=this.days+" days "
+      }
+      if(this.hours!==0) {
+        if(this.hours==1)
+          unlockTime+=this.hours+" hour "
+        else
+          unlockTime+=this.hours+" hours "
+      }
+      if(this.minutes!==0) {
+        if(this.minutes==1)
+          unlockTime+=this.minutes+" minute "
+        else
+          unlockTime+=this.minutes+" minutes "
+      }
+      if(this.seconds!==0) {
+        if(this.seconds==1)
+          unlockTime+=this.seconds+" second "
+        else
+          unlockTime+=this.seconds+" seconds "
+      }
+      if(unlockTime==='')
+        unlockTime='now'
+      else
+        this.unlockTime='in '+unlockTime
     },
     encodeQueryData(data) {
      const ret = [];
@@ -116,18 +153,15 @@ export default {
       this.computeUnlockTime();
       this.computeHash();
       const link='https://twitter.com/intent/tweet?'
-      var text='This is a locked Tweet. It will be unlocked in '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
-
-      const tweetData ={
+      var text='This is a locked Tweet. It will be unlocked '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
+      var finalUrl= 'http://localhost:8080/tweets/'+this.hash.substring(1,8)
+         const tweetData ={
         'text': text,
         'hashtags':[this.algo,'TimerTweets'],
-        'url':"https://google.com"
+        'url': finalUrl
       }
       this.composedMessage=link+this.encodeQueryData(tweetData)
       },
-    test(){
-      alert("flight")
-    },
     dateAdder() {
       var currentDate = new Date()
       var newDate = new Date(currentDate)
@@ -137,9 +171,30 @@ export default {
       newDate.setSeconds(newDate.getSeconds()+this.seconds)
       return newDate.toUTCString()
     },
+    pushToFirebase(){
+      var tailURL=this.hash.substring(1,8)
+      var currentDate = new Date().toUTCString()
+      var revealDate = this.dateAdder()
+      database.ref('tweets/' + tailURL).push({
+        tweet: this.tweet,
+        algo: this.algo,
+        hash: this.hash,
+        currentDate: currentDate,
+        revealDate: revealDate
+      });
+
+
+    },
     sendTweet() {
-      this.composeTweet()
-      window.location = this.composedMessage;
+      if(this.tweet!==''){
+        this.pushToFirebase()
+        this.composeTweet()
+        window.location = this.composedMessage;  
+      }
+      else {
+        alert("Message field empty")
+      }
+      
     } 
   },
   watch: {
@@ -160,6 +215,9 @@ export default {
       this.computeUnlockTime()
     }
 
+  },
+  mounted(){
+    this.computeUnlockTime()
   }
 }
 </script>

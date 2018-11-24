@@ -9,6 +9,7 @@
   "dependencies": {
     "@xkeshi/vue-countdown": "^1.0.1",
     "bootstrap-vue": "^2.0.0-rc.11",
+    "firebase": "^5.5.9",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },

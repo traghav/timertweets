@@ -24,7 +24,8 @@ export default {
     var x=newDate.toUTCString()
     var p=Date.parse(x)
     return { 
-      msg: p,
+      uurl: this.$route.params.uurl,
+      msg: this.$route.params.uurl,
       time: p-now
     }
   },
