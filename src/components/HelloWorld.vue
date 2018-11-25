@@ -159,7 +159,6 @@ export default {
         'hashtags':[this.algo,'TimerTweets'],
         'url': finalUrl
       }
-      alert(finalUrl)
       this.composedMessage=link+this.encodeQueryData(tweetData)
       },
     dateAdder() {
