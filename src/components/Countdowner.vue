@@ -12,9 +12,9 @@
 
       <div class="countdown" v-if="time>0">
         <h3>Tweet unlocks in</h3>
-         <countdown :time="time" :interval="100" tag="p" @countdownend="end">
+         <countdown :time="time" :interval="1000" tag="h3" @countdownend="end">
           
-        <template slot-scope="props">{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
+        <template slot-scope="props">&nbsp; {{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
         </countdown>
       </div>
       <div class="countdown" v-if="time<0">
@@ -107,6 +107,7 @@ a {
 
 .countDowner {
   margin: 10px;
+  text-align: center;
 }
 .messagebox {
   max-width: 350px;
@@ -114,6 +115,20 @@ a {
 }
 .hash pre {
   display: inline;
+}
+.countdown h4 {
+  display: inline;
+}
+.countdown h3 {
+  
+  font-family: 'Share Tech Mono', monospace;
+    color: #2b2b2b;
+    
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*top: 50%;*/
+   
+    
 }
 
 </style>

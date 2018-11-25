@@ -19,29 +19,26 @@
         <div class="picker">
           <p>Seconds</p>
           <b-form-select v-model="seconds">
-            <option value="0">0</option>
-            <option v-for="n in 60" :value="n">{{ n }}</option>
+            <option v-for="(n, i) in 60" :value="i">{{ i }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Minutes</p>
           <b-form-select v-model="minutes">
-            <option value="0">0</option>
-            <option v-for="n in 60" :value="n">{{ n }}</option>
+            <option v-for="(n, i) in 60" :value="i">{{ i }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Hours</p>
           <b-form-select v-model="hours">
-            <option value="0">0</option>
-            <option v-for="n in 24" :value="n">{{ n }}</option>
+            <option v-for="(n, i) in 24" :value="i">{{ i }}</option>
           </b-form-select> 
         </div>
         <div class="picker">
           <p>Days</p>
           <b-form-select v-model="days">
-            <option value="0">0</option>
-            <option v-for="n in 999" :value="n">{{ n }}</option>
+            
+            <option v-for="(n, i) in 999" :value="i">{{ i }}</option>
           </b-form-select> 
         </div>   
       </div>
