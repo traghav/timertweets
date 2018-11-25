@@ -14,6 +14,9 @@
     <p><a href="https://blockgeeks.com/guides/what-is-hashing/">Here </a> <a href="https://www.cs.cmu.edu/~adamchik/15-121/lectures/Hashing/hashing.html">are </a><a href="https://www.youtube.com/watch?v=DMtFhACPnTY">some </a>  <a href="https://www.youtube.com/watch?v=b4b8ktEV4Bg">explainers.</a></p>
     <h4>Features planned, Get in touch, etc.</h4>
     <p>I am thinking of tying the Twitter Search API in the reveal page to show the original tweet at the time of reveal. I don't know how well that will work. If you want to get in touch about this or something else, I am availible on the <a href="https://raghav.cc/hello/">web </a> and <a href="mailto:hello@raghav.cc">email.</a></p>
+    <h4> What are you waiting for?</h4>
+    <h4>  <b-link to="/">Create your own Timer Tweet</b-link></h4>
+    
       
   </div>
 </template>

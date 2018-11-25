@@ -171,7 +171,7 @@ export default {
       return newDate.toUTCString()
     },
     pushToFirebase(){
-      var currentDate = new Date().toUTCString()
+      var currentDate = new Date().toString()
       var seed = currentDate + this.hash
       var revealDate = this.dateAdder()
       var tailURL = crypto.createHash(this.algo, 'secret')

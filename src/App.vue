@@ -8,8 +8,8 @@
 
     <div class="footer">
       <b-link to="/help">What even is this? </b-link>/
-      <a href="https://raghav.cc">raghav.cc</a> / 
-      <a href="https://twitter.com/raghavtosh">@raghavtosh</a>
+      By <a href="https://raghav.cc">raghav.cc</a> 
+      
     </div>
 
   </div>
@@ -45,8 +45,8 @@
   color: #FF8926;
 }
 
-.footer a {
-  color: #FF8926;
+a {
+  color: #FF8926 !important; 
 }
 @media  (max-width: 450px) {
   .footer {
