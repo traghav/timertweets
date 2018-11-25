@@ -12,24 +12,50 @@
 
       <div class="countdown" v-if="time>0">
         <h3>Tweet unlocks in</h3>
-         <countdown :time="time" :interval="1000" tag="h3" @countdownend="end">
+         <countdown :time="time" :interval="1000" tag="p" @countdownend="end">
           
-        <template slot-scope="props">&nbsp; {{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds</template>
+          <template slot-scope="props">&nbsp; 
+
+
+            <div class="block">
+                <p class="digit">{{ props.days }}</p>
+                <p class="text">Days</p>
+            </div>
+            <div class="block">
+                <p class="digit">{{ props.hours }}</p>
+                <p class="text">Hours</p>
+            </div>
+            <div class="block">
+                <p class="digit">{{ props.minutes }}</p>
+                <p class="text">Minutes</p>
+            </div>
+            <div class="block">
+                <p class="digit">{{ props.seconds }}</p>
+                <p class="text">Seconds</p>
+            </div>
+
+
+          </template>
         </countdown>
       </div>
       <div class="countdown" v-if="time<0">
+        <h3>Unlocked Tweet</h3>
         <div class="messagebox">
           <b-form-textarea textarea v-model="message" placeholder="Enter message to be encrypted" :readonly="true" :rows="4"></b-form-textarea >
         </div>
-        <div class="hash">
-          Proof: <pre>{{hash}}</pre>
-        </div>
-        <div class="hash">
-          Algorithm: <pre>{{algo}}</pre>
-        </div>
-        <div class="hash">
-          Posted Date: {{postedDate}}
-        </div>
+      </div>
+      <div class="hash">
+        Proof: <pre>{{hash}}</pre>
+      </div>
+      <div class="hash">
+        Algorithm: <pre>{{algo}}</pre>
+      </div>
+      <div class="hash">
+        Posted on: {{postedDate}}
+      </div>
+      <div class="help">
+
+        <b-link to="/">Create your own locked tweet</b-link>
       </div>
     </div>
   </div>
@@ -80,7 +106,7 @@ export default {
               vm.calculateDiff()
            }
            else {
-            alert("Could not find the Tweet URL")
+            alert("Could not find the Tweet URL. Redirecting to home page.")
             vm.$router.push('/')
            }
           });
@@ -111,24 +137,86 @@ a {
 }
 .messagebox {
   max-width: 350px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  width:500px;
+  margin:auto; 
+
 }
 .hash pre {
   display: inline;
 }
-.countdown h4 {
-  display: inline;
+
+.block {
+    display: inline-flex;
+    flex-direction: column;
+    margin: 20px;
 }
-.countdown h3 {
+
+.text {
+    color: #42b983;
+    font-size: 20px;
+    
+    font-weight: 40;
+    margin-top:10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.digit {
+    color: #3b3b3b;
+    font-size: 50px;
+    font-weight: 100;
+    
+    margin: 10px;
+    text-align: center;
+}
+.help {
+  margin: 20px;
+  font-size: 30px;
   
-  font-family: 'Share Tech Mono', monospace;
-    color: #2b2b2b;
+}
+
+@media  (max-width: 450px) {
+.countDowner {
+  margin: 10px;
+  text-align: left;
+}
+.messagebox {
+  max-width: 350px;
+  margin-bottom: 30px;
+  
+
+}
+.help {
+  margin: 0px;
+  margin-top: 10px;
+  font-size: 18px;
+  
+}
+.block {
+    display: inline-flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.text {
+    color: #1abc9c;
+    font-size: 13px;
     
-    /*position: absolute;*/
-    /*left: 50%;*/
-    /*top: 50%;*/
-   
+    font-weight: 30;
+    margin-top:10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.digit {
+    color: #3b3b3b;
+    font-size: 30px;
+    font-weight: 100;
     
+    margin: 10px;
+    text-align: center;
+} 
 }
 
 </style>

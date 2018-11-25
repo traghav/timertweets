@@ -46,7 +46,7 @@
         <span class="tweet">
           <b-button  variant="primary" v-on:click="sendTweet()">Tweet it !</b-button>
         </span>
-        <span class="tweet">
+        <span class="test">
           <b-button  variant="primary" v-on:click="pushToFirebase()">Test it !</b-button>
         </span>
 
@@ -152,7 +152,7 @@ export default {
       this.computeHash();
       const link='https://twitter.com/intent/tweet?'
       var text='This is a locked Tweet. It will be unlocked '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
-      var finalUrl= 'http://localhost:8080/tweets/'+this.tailURL
+      var finalUrl= 'http://localhost:8080/#/tweet/'+this.tailURL
          const tweetData ={
         'text': text,
         'hashtags':[this.algo,'TimerTweets'],
@@ -247,10 +247,13 @@ a {
   margin-right: 10px;
 }
 .hello {
+  
   margin: 10px;
 }
 
-
+.test {
+  visibility: hidden;
+}
 .user{
   margin-top: 10px;
 }
