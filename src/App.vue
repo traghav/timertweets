@@ -26,17 +26,25 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #FF8926;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #FF8926;
 }
 .footer{
-  position: absolute;
+  position: fixed;
   bottom: 0;
   margin: 10px;
+  margin-top: 200px;
   font-size: 18px;
-  color: #F20000;
+  color: #FF8926;
 }
+.footer a {
+  color: #FF8926;
+}
+body{
+  background: #FCF2CB36 !important;
+}
+
 </style>

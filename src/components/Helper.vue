@@ -24,7 +24,7 @@ export default {
   name: 'Helper',
   data() {
     return { 
-      msg: 'Timer Tweet 🔒',
+      msg: 'Timer Tweet 🤷',
       
     }
   },

@@ -55,7 +55,7 @@
       </div>
       <div class="help">
 
-        <b-link to="/">Create your own locked tweet</b-link>
+        <b-link to="/">Create your own Timer Tweet</b-link>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
   data() {
     return { 
       uurl: this.$route.params.uurl,
-      msg: 'Timer Tweet 🔒',
+      msg: 'Timer Tweet ⏲️',
       time: 0,
       loaded: false,
       message:'',
@@ -82,6 +82,7 @@ export default {
   methods: {
     end(){
       this.calculateDiff()
+      this.msg="Timer Tweet 🔓"
     },
     calculateDiff(){
       var now=new Date()
@@ -128,7 +129,7 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+  color: #FF8926;
 }
 
 .countDowner {
@@ -153,7 +154,7 @@ a {
 }
 
 .text {
-    color: #42b983;
+    color: #FF8926;
     font-size: 20px;
     
     font-weight: 40;
@@ -200,7 +201,7 @@ a {
 }
 
 .text {
-    color: #1abc9c;
+    color: #FF8926;
     font-size: 13px;
     
     font-weight: 30;
