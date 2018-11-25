@@ -82,6 +82,8 @@ export default {
   methods: {
     end(){
       this.calculateDiff()
+      var audio = new Audio('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')
+      audio.play()
       this.msg="Timer Tweet 🔓"
     },
     calculateDiff(){
