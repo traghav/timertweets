@@ -23,7 +23,8 @@
           </b-form-select> 
         </div>
         <div class="picker">
-          <p>Minutes</p>
+          <span v-if="minutes<=1"><p>Minute</p></span>
+          <span v-if="minutes>1"><p>Minutes</p></span>
           <b-form-select v-model="minutes">
             <option v-for="(n, i) in 60" :value="i">{{ i }}</option>
           </b-form-select> 
@@ -74,8 +75,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      seconds: 30,
-      minutes: 0,
+      seconds: 0,
+      minutes: 1,
       hours: 0,
       days: 0,
       msg: "Timer Tweet 🔒",
@@ -151,13 +152,14 @@ export default {
       this.computeUnlockTime();
       this.computeHash();
       const link='https://twitter.com/intent/tweet?'
-      var text='This is a locked Tweet. It will be unlocked '+this.unlockTime+'.\nProof: '+this.hash+"\nFind unlocked tweet at:"
-      var finalUrl= 'http://localhost:8080/#/tweet/'+this.tailURL
+      var text='This is a locked Tweet. It will be unlocked '+this.unlockTime+'.\nProof:'+this.hash+"\nFind unlocked tweet at:"
+      var finalUrl= 'http://timertweet.com/#/tweet/'+this.tailURL
          const tweetData ={
         'text': text,
         'hashtags':[this.algo,'TimerTweets'],
         'url': finalUrl
       }
+      alert(finalUrl)
       this.composedMessage=link+this.encodeQueryData(tweetData)
       },
     dateAdder() {
@@ -247,7 +249,7 @@ a {
   margin-right: 10px;
 }
 .hello {
-  
+
   margin: 10px;
 }
 
