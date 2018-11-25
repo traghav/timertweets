@@ -156,7 +156,7 @@ export default {
       var finalUrl= 'http://timertweet.com/#/tweet/'+this.tailURL
          const tweetData ={
         'text': text,
-        'hashtags':[this.algo,'TimerTweets'],
+        'hashtags':[this.algo,'TimerTweet'],
         'url': finalUrl
       }
       this.composedMessage=link+this.encodeQueryData(tweetData)
