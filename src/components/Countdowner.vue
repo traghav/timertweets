@@ -82,8 +82,25 @@ export default {
   methods: {
     end(){
       this.calculateDiff()
+      this.loaded=false
       var audio = new Audio('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')
       audio.play()
+      const vm=this;
+      firebase.database().ref('tweets/'+this.uurl).once('value').then(function(snapshot) {var data = (snapshot.val() && snapshot.val()) || 'null';
+           if(data!='null'){
+              vm.message=data.tweet
+              vm.algo=data.algo
+              vm.hash=data.hash
+              vm.revealDate=data.revealDate
+              vm.postedDate=data.currentDate
+              vm.loaded=true
+              vm.calculateDiff()
+           }
+           else {
+            alert("Could not find the Tweet URL. Redirecting to home page.")
+            vm.$router.push('/')
+           }
+          });
       this.msg="Timer Tweet 🔓"
     },
     calculateDiff(){
@@ -100,7 +117,6 @@ export default {
     const vm=this;
     firebase.database().ref('tweets/'+this.uurl).once('value').then(function(snapshot) {var data = (snapshot.val() && snapshot.val()) || 'null';
            if(data!='null'){
-              vm.message=data.tweet
               vm.algo=data.algo
               vm.hash=data.hash
               vm.revealDate=data.revealDate
